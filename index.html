@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#102a24">
+<meta name="description" content="An interactive student research showcase on plant-based antimicrobial research by Rohan Dhakchawale.">
+<title>Plantova | Plant-Based Antimicrobial Research</title>
+<style>
+:root{
+  --bg:#f5f8f3;--surface:#fff;--surface2:#eaf2e8;--text:#18352b;--muted:#60756a;
+  --primary:#16866a;--primary2:#67d6a5;--accent:#f3b84b;--line:#dce7dc;
+  --shadow:0 18px 50px rgba(19,58,43,.10);--nav:rgba(245,248,243,.86)
+}
+[data-theme="dark"]{
+  --bg:#0c1714;--surface:#14231e;--surface2:#1c3028;--text:#edf7ef;--muted:#afc4b6;
+  --primary:#55d6a4;--primary2:#9bf0c6;--accent:#ffd16a;--line:#2c4439;
+  --shadow:0 18px 50px rgba(0,0,0,.22);--nav:rgba(12,23,20,.88)
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:88px}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.7 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;transition:background .25s,color .25s}
+a{color:inherit}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
+.container{width:min(1160px,92%);margin:auto}
+.progress{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--primary),var(--accent));z-index:1000}
+header{position:sticky;top:0;z-index:100;background:var(--nav);backdrop-filter:blur(18px);border-bottom:1px solid var(--line)}
+.nav{min-height:76px;display:flex;align-items:center;justify-content:space-between;gap:18px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;font-weight:900;letter-spacing:-.04em;font-size:1.2rem}
+.logo-mark{display:grid;place-items:center;width:42px;height:42px;border-radius:14px;background:linear-gradient(135deg,var(--primary),#0b5145);color:white;font-size:1.35rem;box-shadow:0 8px 22px #16866a35}
+.navlinks{display:flex;align-items:center;gap:20px}
+.navlinks a{text-decoration:none;color:var(--muted);font-size:.92rem;font-weight:700;transition:color .2s}
+.navlinks a:hover{color:var(--primary)}
+.nav-actions{display:flex;align-items:center;gap:8px}
+.icon-btn,.menu-btn{width:42px;height:42px;border:1px solid var(--line);background:var(--surface);color:var(--text);border-radius:13px;display:grid;place-items:center;font-size:1.1rem}
+.menu-btn{display:none}
+.hero{position:relative;overflow:hidden;padding:90px 0 80px;background:radial-gradient(ellipse at 85% 12%,#9ee8bf66,transparent 30%),radial-gradient(ellipse at 4% 80%,#f3b84b30,transparent 28%),var(--bg)}
+.hero-grid{display:grid;grid-template-columns:1.1fr .9fr;align-items:center;gap:55px}
+.eyebrow{display:inline-flex;align-items:center;gap:9px;color:var(--primary);font-size:.78rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase}
+.pulse{width:8px;height:8px;background:var(--primary);border-radius:50%;box-shadow:0 0 0 6px #16866a20;animation:pulse 1.8s infinite}
+@keyframes pulse{50%{box-shadow:0 0 0 11px #16866a00}}
+h1,h2,h3,p{margin-top:0}
+h1{font-size:clamp(2.7rem,6vw,5.5rem);line-height:.99;letter-spacing:-.065em;margin:22px 0}
+.gradient-text{background:linear-gradient(100deg,var(--primary),#56b985 60%,#d6a02b);-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{font-size:1.15rem;color:var(--muted);max-width:640px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:13px 19px;border-radius:14px;border:1px solid transparent;text-decoration:none;font-weight:800;transition:transform .2s,box-shadow .2s,background .2s}
+.btn:hover{transform:translateY(-3px);box-shadow:0 12px 25px #16866a22}
+.btn-primary{background:var(--primary);color:#fff}
+.btn-secondary{background:var(--surface);border-color:var(--line);color:var(--text)}
+.btn-row{display:flex;flex-wrap:wrap;gap:12px;margin:27px 0}
+.hero-meta{display:flex;flex-wrap:wrap;gap:18px;color:var(--muted);font-size:.88rem}
+.hero-meta span{display:flex;align-items:center;gap:7px}
+.hero-art{position:relative;min-height:430px;display:grid;place-items:center}
+.orbit{position:absolute;width:370px;height:370px;border:1px solid var(--line);border-radius:50%;animation:spin 28s linear infinite}
+.orbit:before,.orbit:after{content:"";position:absolute;width:17px;height:17px;background:var(--accent);border:4px solid var(--bg);border-radius:50%;top:45px;left:38px}
+.orbit:after{background:var(--primary2);top:auto;left:auto;right:15px;bottom:100px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.plant-illustration{position:relative;width:min(330px,85%);aspect-ratio:1;border-radius:46% 54% 60% 40% / 45% 42% 58% 55%;background:linear-gradient(140deg,#c4efcb,#4cae7b 60%,#145a43);display:grid;place-items:center;box-shadow:0 35px 90px #16866a38;animation:float 5s ease-in-out infinite}
+.plant-illustration .leaf{font-size:9rem;filter:drop-shadow(0 18px 12px #123b2c44);transform:rotate(-22deg)}
+@keyframes float{50%{transform:translateY(-12px) rotate(2deg)}}
+.float-card{position:absolute;background:var(--surface);border:1px solid var(--line);padding:13px 16px;border-radius:16px;box-shadow:var(--shadow);font-size:.88rem;font-weight:800;animation:float 4s ease-in-out infinite}
+.float-card small{display:block;color:var(--muted);font-weight:500}
+.fc1{top:45px;left:0}.fc2{right:0;bottom:55px;animation-delay:-2s}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:-10px;position:relative;z-index:2}
+.stat{padding:22px;background:var(--surface);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow)}
+.stat strong{font-size:1.7rem;letter-spacing:-.04em;display:block;color:var(--primary)}
+.stat span{font-size:.87rem;color:var(--muted)}
+section{padding:82px 0}
+.section-head{max-width:740px;margin-bottom:32px}
+.kicker{color:var(--primary);font-size:.76rem;font-weight:900;letter-spacing:.16em;text-transform:uppercase}
+h2{font-size:clamp(2rem,4vw,3.2rem);line-height:1.08;letter-spacing:-.045em;margin:12px 0 15px}
+.section-head p{color:var(--muted);font-size:1.05rem}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:25px;box-shadow:0 8px 28px #193c2910;transition:transform .25s,border-color .25s}
+.card:hover{transform:translateY(-5px);border-color:var(--primary)}
+.card-icon{width:52px;height:52px;display:grid;place-items:center;border-radius:16px;background:var(--surface2);font-size:1.55rem;margin-bottom:19px}
+.card h3{font-size:1.16rem;margin-bottom:8px}
+.card p{color:var(--muted);margin-bottom:0}
+.soft-section{background:var(--surface2)}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:35px;align-items:center}
+.checklist{list-style:none;padding:0;display:grid;gap:13px}
+.checklist li{display:flex;gap:12px;align-items:flex-start}
+.check{flex:0 0 27px;height:27px;border-radius:9px;background:var(--primary);color:white;display:grid;place-items:center;font-weight:900}
+.note{padding:17px 19px;border:1px solid #e3bd62;background:#fff5d9;color:#59451a;border-radius:14px;margin-top:22px}
+[data-theme="dark"] .note{background:#3c321c;color:#ffe7a7;border-color:#78612b}
+.plant-toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin-bottom:20px}
+.search{flex:1;min-width:200px;max-width:360px;padding:12px 15px;border:1px solid var(--line);background:var(--surface);color:var(--text);border-radius:13px}
+.plant-card{padding:0;overflow:hidden}
+.plant-banner{height:145px;display:grid;place-items:center;background:linear-gradient(135deg,#d7efcf,#83c69b);font-size:4rem}
+.plant-card:nth-child(2) .plant-banner{background:linear-gradient(135deg,#f7e9bd,#b8d18b)}
+.plant-card:nth-child(3) .plant-banner{background:linear-gradient(135deg,#e9d8f2,#b7d4bd)}
+.plant-card:nth-child(4) .plant-banner{background:linear-gradient(135deg,#f6dfc5,#e9bd8b)}
+.plant-card:nth-child(5) .plant-banner{background:linear-gradient(135deg,#d8e6f3,#9dc8a9)}
+.plant-card:nth-child(6) .plant-banner{background:linear-gradient(135deg,#e7e7c2,#b6d7a4)}
+.plant-body{padding:22px}
+.plant-body .latin{font-style:italic;color:var(--primary);font-size:.9rem}
+.pill{display:inline-block;border-radius:100px;background:var(--surface2);color:var(--primary);padding:5px 10px;font-size:.75rem;font-weight:800;margin:7px 5px 0 0}
+.workflow{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.step{position:relative;padding:22px 18px;background:var(--surface);border:1px solid var(--line);border-radius:17px}
+.step b{display:grid;place-items:center;width:34px;height:34px;background:var(--primary);color:white;border-radius:11px;margin-bottom:14px}
+.step p{font-size:.9rem;color:var(--muted);margin-bottom:0}
+.chart-wrap{padding:26px;background:var(--surface);border:1px solid var(--line);border-radius:22px}
+.chart{width:100%;height:auto;display:block}
+.chart text{fill:var(--text);font-family:inherit}
+.quiz{max-width:760px}
+.quiz-option{display:block;text-align:left;width:100%;padding:13px 15px;margin:9px 0;border:1px solid var(--line);background:var(--surface);color:var(--text);border-radius:12px}
+.quiz-option:hover{border-color:var(--primary)}
+.quiz-option.correct{border-color:#2b9d69;background:#e2f6e9;color:#154c31}
+.quiz-option.wrong{border-color:#d26b6b;background:#fff0f0;color:#7c2525}
+.quiz-result{font-weight:800;margin-top:14px;min-height:28px}
+.project-panel{padding:30px;border-radius:24px;background:linear-gradient(135deg,#123b2c,#176b4d);color:white}
+.project-panel h2{color:white}
+.project-panel p{color:#d6e9dc}
+.project-panel .btn-secondary{color:#123b2c}
+.details-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:22px 0}
+.detail{padding:14px;border-radius:13px;background:#ffffff13}
+.detail span{display:block;color:#bcd8c7;font-size:.8rem}
+.detail strong{overflow-wrap:anywhere}
+.ref-list{padding-left:22px;display:grid;gap:16px}
+.ref-list li{padding-left:5px}
+.ref-list a{color:var(--primary);overflow-wrap:anywhere}
+.contact-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:28px}
+.form-card{background:var(--surface);border:1px solid var(--line);padding:27px;border-radius:22px}
+label{display:block;font-size:.9rem;font-weight:800;margin:13px 0 6px}
+input,textarea,select{width:100%;padding:12px 13px;border-radius:11px;border:1px solid var(--line);background:var(--bg);color:var(--text)}
+textarea{resize:vertical}
+.status{font-size:.9rem;color:var(--primary);min-height:26px;margin-top:12px}
+footer{padding:32px 0;border-top:1px solid var(--line);color:var(--muted)}
+.footer-row{display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap}
+.top-btn{position:fixed;right:20px;bottom:20px;width:45px;height:45px;border:0;border-radius:15px;background:var(--primary);color:white;font-size:1.2rem;box-shadow:var(--shadow);display:none;z-index:20}
+.top-btn.show{display:block}
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .7s,transform .7s}
+.reveal.visible{opacity:1;transform:none}
+.small{font-size:.86rem;color:var(--muted)}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;scroll-behavior:auto!important;transition:none!important}.reveal{opacity:1;transform:none}}
+@media(max-width:850px){
+ .navlinks{display:none;position:absolute;left:4%;right:4%;top:76px;padding:18px;background:var(--surface);border:1px solid var(--line);border-radius:17px;box-shadow:var(--shadow);flex-direction:column;align-items:flex-start}
+ .navlinks.open{display:flex}.menu-btn{display:grid}.hero-grid,.two-col,.contact-grid{grid-template-columns:1fr}.hero{padding:60px 0}.hero-art{min-height:350px}.orbit{width:300px;height:300px}.stats{grid-template-columns:repeat(2,1fr)}.grid-3{grid-template-columns:repeat(2,1fr)}.workflow{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:560px){
+ section{padding:58px 0}.grid-3{grid-template-columns:1fr}.workflow{grid-template-columns:1fr}.hero-art{min-height:310px}.plant-illustration{width:245px}.plant-illustration .leaf{font-size:7rem}.float-card{font-size:.78rem}.fc1{top:12px}.fc2{bottom:20px}.stats{gap:9px}.stat{padding:15px}.stat strong{font-size:1.4rem}.details-grid{grid-template-columns:1fr}.btn-row .btn{width:100%}
+}
+</style>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+<header>
+ <div class="container nav">
+  <a class="logo" href="#home"><span class="logo-mark">✿</span><span>PLANTOVA<span style="color:var(--primary)">.</span></span></a>
+  <nav class="navlinks" id="navlinks" aria-label="Main navigation">
+   <a href="#about">Research</a><a href="#plants">Plants</a><a href="#method">Methodology</a><a href="#learn">Mini Quiz</a><a href="#student">Student</a><a href="#references">References</a><a href="#contact">Contact</a>
+  </nav>
+  <div class="nav-actions">
+   <button class="icon-btn" id="themeToggle" aria-label="Toggle light or dark theme" title="Toggle theme">☾</button>
+   <button class="menu-btn" id="menuToggle" aria-label="Open navigation" aria-expanded="false">☰</button>
+  </div>
+ </div>
+</header>
+
+<main id="home">
+<section class="hero">
+ <div class="container hero-grid">
+  <div class="reveal">
+   <div class="eyebrow"><span class="pulse"></span> Student research showcase</div>
+   <h1>Nature's tiny defenders.<br><span class="gradient-text">Science in every leaf.</span></h1>
+   <p class="lead">A student-led exploration of plant-based antimicrobial research, bioactive compounds, and the scientific evidence behind traditional medicinal plants.</p>
+   <div class="btn-row">
+    <a class="btn btn-primary" href="#about">Explore the project <span>↗</span></a>
+    <a class="btn btn-secondary" href="#references">Explore references</a>
+   </div>
+   <div class="hero-meta"><span>🌱 Botanical science</span><span>🧪 Evidence-focused</span><span>📚 Academic project</span></div>
+  </div>
+  <div class="hero-art reveal" aria-label="Decorative plant illustration">
+   <div class="orbit"></div><div class="plant-illustration"><span class="leaf">🌿</span></div>
+   <div class="float-card fc1">🌱 Plant compounds<small>Nature-inspired discovery</small></div>
+   <div class="float-card fc2">🔬 Research first<small>Evidence over assumptions</small></div>
+  </div>
+ </div>
+</section>
+
+<div class="container stats reveal">
+ <div class="stat"><strong>01</strong><span>Research theme</span></div>
+ <div class="stat"><strong>03</strong><span>Example medicinal plants</span></div>
+ <div class="stat"><strong>04</strong><span>Research workflow stages</span></div>
+ <div class="stat"><strong>100%</strong><span>Student project showcase</span></div>
+</div>
+
+<section id="about">
+ <div class="container">
+  <div class="section-head reveal"><div class="kicker">01 / The big idea</div><h2>Can plants inspire the next chapter of antimicrobial research?</h2><p>Plants produce many natural compounds as part of their biology. Researchers study selected extracts and molecules to understand whether they affect microorganisms under controlled laboratory conditions.</p></div>
+  <div class="grid-3">
+   <article class="card reveal"><div class="card-icon">🍃</div><h3>Phytochemicals</h3><p>Phenolics, flavonoids, terpenoids and alkaloids are among the compound groups investigated in plant research.</p></article>
+   <article class="card reveal"><div class="card-icon">🧫</div><h3>Antimicrobial screening</h3><p>Published studies may examine effects on bacteria or fungi using defined methods, controls and concentrations.</p></article>
+   <article class="card reveal"><div class="card-icon">🧠</div><h3>Critical thinking</h3><p>A laboratory result is an early piece of evidence—not proof that a plant product safely treats an infection in people.</p></article>
+  </div>
+ </div>
+</section>
+
+<section class="soft-section" id="objectives">
+ <div class="container two-col">
+  <div class="reveal"><div class="kicker">02 / Project goals</div><h2>Curiosity guided by evidence.</h2><p class="small">The project aims to introduce plant-based antimicrobial research and encourage careful reading of scientific literature.</p>
+   <ul class="checklist">
+    <li><span class="check">✓</span><span><strong>Identify</strong><br>Explore selected medicinal plants and their reported compounds.</span></li>
+    <li><span class="check">✓</span><span><strong>Understand</strong><br>Learn how laboratory antimicrobial assays are described in research papers.</span></li>
+    <li><span class="check">✓</span><span><strong>Compare carefully</strong><br>Consider extraction methods, controls, study quality and limitations.</span></li>
+    <li><span class="check">✓</span><span><strong>Communicate</strong><br>Present sources and conclusions clearly without overstating evidence.</span></li>
+   </ul>
+  </div>
+  <div class="project-panel reveal">
+   <div class="kicker" style="color:#9bf0c6">Research mindset</div><h2>Natural doesn't automatically mean safe.</h2>
+   <p>Plant identity, plant part, preparation, dose, contamination and toxicity all matter. Clinical claims require appropriate evidence.</p>
+   <a class="btn btn-secondary" href="#references">Read the sources ↗</a>
+  </div>
+ </div>
+</section>
+
+<section id="plants">
+ <div class="container">
+  <div class="section-head reveal"><div class="kicker">03 / Botanical library</div><h2>Meet the research candidates.</h2><p>These are examples of plants discussed in the scientific literature. Search the cards and open reliable sources to investigate each species further.</p></div>
+  <div class="plant-toolbar reveal"><input class="search" id="plantSearch" type="search" placeholder="Search plants or compounds…" aria-label="Search plants"><span class="small" id="plantCount">Showing 6 plant profiles</span></div>
+  <div class="grid-3" id="plantGrid">
+   <article class="card plant-card" data-search="tulsi holy basil ocimum tenuiflorum eugenol phenolics"><div class="plant-banner">🌿</div><div class="plant-body"><h3>Tulsi / Holy Basil</h3><div class="latin">Ocimum tenuiflorum</div><p>Investigated for essential-oil constituents and phenolic compounds. Composition varies by sample and preparation.</p><span class="pill">Essential oils</span><span class="pill">Phenolics</span></div></article>
+   <article class="card plant-card" data-search="neem azadirachta indica limonoids leaves bark"><div class="plant-banner">🌳</div><div class="plant-body"><h3>Neem</h3><div class="latin">Azadirachta indica</div><p>Contains several studied limonoids and other constituents; findings differ across plant parts and extracts.</p><span class="pill">Limonoids</span><span class="pill">Plant extracts</span></div></article>
+   <article class="card plant-card" data-search="turmeric curcuma longa curcumin rhizome"><div class="plant-banner">🫚</div><div class="plant-body"><h3>Turmeric</h3><div class="latin">Curcuma longa</div><p>Curcuminoids have been studied in experimental models for a range of biological activities.</p><span class="pill">Curcuminoids</span><span class="pill">Rhizome</span></div></article>
+   <article class="card plant-card" data-search="garlic allium sativum allicin sulfur compounds"><div class="plant-banner">🧄</div><div class="plant-body"><h3>Garlic</h3><div class="latin">Allium sativum</div><p>Sulfur-containing compounds, including allicin, have been investigated in laboratory studies.</p><span class="pill">Sulfur compounds</span><span class="pill">Allicin</span></div></article>
+   <article class="card plant-card" data-search="ginger zingiber officinale gingerols rhizome"><div class="plant-banner">🪴</div><div class="plant-body"><h3>Ginger</h3><div class="latin">Zingiber officinale</div><p>Gingerols and related constituents are studied for different biological effects in experimental settings.</p><span class="pill">Gingerols</span><span class="pill">Rhizome</span></div></article>
+   <article class="card plant-card" data-search="clove syzygium aromaticum eugenol flower buds"><div class="plant-banner">🌸</div><div class="plant-body"><h3>Clove</h3><div class="latin">Syzygium aromaticum</div><p>Clove essential oil is rich in eugenol, a compound widely investigated in laboratory research.</p><span class="pill">Eugenol</span><span class="pill">Essential oil</span></div></article>
+  </div>
+  <p class="small" style="margin-top:18px">Plant profiles are introductory summaries, not clinical recommendations. Emoji are illustrative icons, not botanical photographs.</p>
+ </div>
+</section>
+
+<section class="soft-section" id="method">
+ <div class="container">
+  <div class="section-head reveal"><div class="kicker">04 / Methodology</div><h2>From a question to a considered conclusion.</h2><p>This project template presents a literature-review workflow. It does not claim that laboratory experiments have been performed.</p></div>
+  <div class="workflow">
+   <article class="step reveal"><b>1</b><h3>Define</h3><p>Frame a focused question about a plant, compound or published antimicrobial finding.</p></article>
+   <article class="step reveal"><b>2</b><h3>Search</h3><p>Find peer-reviewed articles and credible scientific sources; record search dates and terms.</p></article>
+   <article class="step reveal"><b>3</b><h3>Extract</h3><p>Record species, plant part, preparation, test organism, assay, controls and reported outcomes.</p></article>
+   <article class="step reveal"><b>4</b><h3>Evaluate</h3><p>Compare like with like, note limitations and distinguish laboratory findings from clinical evidence.</p></article>
+  </div>
+  <div class="note"><strong>Safety and academic integrity:</strong> Any laboratory work involving microorganisms must follow your institution's approved procedures, supervision and biosafety requirements. Never invent results or citations.</div>
+ </div>
+</section>
+
+<section id="data">
+ <div class="container two-col">
+  <div class="reveal"><div class="kicker">05 / Data visualization</div><h2>Show evidence, not made-up numbers.</h2><p>Use this space to explain what a comparison chart can communicate. The chart below is a schematic illustration only and has no measured values.</p><p class="small">For a final report, replace it with verified data from a cited paper or your approved study, including units, controls and sample details.</p><a class="btn btn-secondary" href="#references">Find sources</a></div>
+  <div class="chart-wrap reveal">
+   <h3>Illustrative research workflow</h3>
+   <svg class="chart" viewBox="0 0 520 300" role="img" aria-label="Conceptual diagram of evidence moving from published studies to cautious interpretation">
+    <defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#16866a"/><stop offset="1" stop-color="#67d6a5"/></linearGradient></defs>
+    <rect x="10" y="20" width="500" height="65" rx="14" fill="var(--surface2)" stroke="var(--line)"/>
+    <text x="260" y="47" text-anchor="middle" font-size="15" font-weight="700">Published studies</text><text x="260" y="68" text-anchor="middle" font-size="12">Methods • controls • results</text>
+    <path d="M260 86 V112" stroke="var(--primary)" stroke-width="3" stroke-linecap="round"/><path d="M252 105 L260 114 L268 105" fill="none" stroke="var(--primary)" stroke-width="3"/>
+    <rect x="10" y="120" width="500" height="65" rx="14" fill="var(--surface2)" stroke="var(--line)"/>
+    <text x="260" y="147" text-anchor="middle" font-size="15" font-weight="700">Critical comparison</text><text x="260" y="168" text-anchor="middle" font-size="12">Consistency • limitations • reproducibility</text>
+    <path d="M260 186 V212" stroke="var(--primary)" stroke-width="3" stroke-linecap="round"/><path d="M252 205 L260 214 L268 205" fill="none" stroke="var(--primary)" stroke-width="3"/>
+    <rect x="10" y="220" width="500" height="65" rx="14" fill="url(#g)"/>
+    <text x="260" y="247" text-anchor="middle" font-size="15" font-weight="700" fill="#102a24">Cautious conclusion</text><text x="260" y="268" text-anchor="middle" font-size="12" fill="#102a24">What the evidence supports—and what it doesn't</text>
+   </svg>
+   <p class="small">Conceptual diagram • no experimental results represented</p>
+  </div>
+ </div>
+</section>
+
+<section class="soft-section" id="learn">
+ <div class="container two-col">
+  <div class="reveal"><div class="kicker">06 / Quick learning</div><h2>Test your research knowledge.</h2><p>Try this mini quiz to revise one key principle from antimicrobial research.</p></div>
+  <div class="card quiz reveal"><div class="pill">Question 1 of 1</div><h3 style="margin-top:12px">What does antimicrobial activity observed in a laboratory test prove?</h3>
+   <button class="quiz-option" data-correct="false">A. The plant definitely cures infections in humans.</button>
+   <button class="quiz-option" data-correct="true">B. It provides preliminary evidence under the tested conditions.</button>
+   <button class="quiz-option" data-correct="false">C. The plant is safe at any dose.</button>
+   <div class="quiz-result" id="quizResult" aria-live="polite"></div>
+   <button class="btn btn-secondary" id="quizReset" type="button">Try again ↻</button>
+  </div>
+ </div>
+</section>
+
+<section id="student">
+ <div class="container">
+  <div class="section-head reveal"><div class="kicker">07 / Student profile</div><h2>Project presented by</h2><p>Academic project information.</p></div>
+  <div class="project-panel reveal">
+   <div class="eyebrow" style="color:#9bf0c6">Student researcher</div>
+   <h2>Rohan Dhakchawale</h2>
+   <p>Plant-Based Antimicrobial Research</p>
+   <div class="details-grid">
+    <div class="detail"><span>Student name</span><strong>Rohan Dhakchawale</strong></div>
+    <div class="detail"><span>University / College</span><strong>JSPM University</strong></div>
+    <div class="detail"><span>Project area</span><strong>Pharmacy / Plant Research</strong></div>
+    <div class="detail"><span>Project format</span><strong>Academic research showcase</strong></div>
+   </div>
+   <p class="small" style="color:#d6e9dc">Please verify the official institution name and course details before submitting. No guide name, degree or experimental result has been assumed.</p>
+   <button class="btn btn-secondary" id="printBtn" type="button">Print / Save as PDF ⤓</button>
+  </div>
+ </div>
+</section>
+
+<section id="references">
+ <div class="container">
+  <div class="section-head reveal"><div class="kicker">08 / Further reading</div><h2>Scientific references.</h2><p>Use the original publications to check claims and prepare your own bibliography in the format required by your college.</p></div>
+  <ol class="ref-list">
+   <li>Cowan MM. Plant Products as Antimicrobial Agents. <em>Clinical Microbiology Reviews.</em> 1999;12(4):564–582. <a href="https://doi.org/10.1128/CMR.12.4.564" target="_blank" rel="noopener noreferrer">https://doi.org/10.1128/CMR.12.4.564</a></li>
+   <li>Nascimento GGF, Locatelli J, Freitas PC, Silva GL. Antibacterial activity of plant extracts and phytochemicals on antibiotic-resistant bacteria. <em>Brazilian Journal of Microbiology.</em> 2000;31:247–256. <a href="https://doi.org/10.1590/S1517-83822000000400003" target="_blank" rel="noopener noreferrer">https://doi.org/10.1590/S1517-83822000000400003</a></li>
+   <li>World Health Organization. Antimicrobial resistance. <a href="https://www.who.int/news-room/fact-sheets/detail/antimicrobial-resistance" target="_blank" rel="noopener noreferrer">WHO fact sheet</a>.</li>
+   <li>For plant-specific claims, add verified peer-reviewed studies for the exact species, preparation and organism discussed. Check the article details and DOI before submission.</li>
+  </ol>
+ </div>
+</section>
+
+<section class="soft-section" id="contact">
+ <div class="container contact-grid">
+  <div class="reveal"><div class="kicker">09 / Contact</div><h2>Let's talk science.</h2><p>Use the form to draft a message about the project. This standalone page does not send messages to a server.</p><div class="card"><div class="card-icon">✉️</div><h3>How this demo works</h3><p>When you submit, the website prepares a message you can copy. To receive messages online, a secure form service or backend must be connected.</p></div></div>
+  <form class="form-card reveal" id="contactForm">
+   <h3>Send a project message</h3>
+   <label for="visitorName">Your name</label><input id="visitorName" name="name" required maxlength="100" placeholder="Enter your name">
+   <label for="visitorEmail">Email address</label><input id="visitorEmail" name="email" type="email" required maxlength="150" placeholder="you@example.com">
+   <label for="messageType">Message topic</label><select id="messageType" name="topic"><option>Project feedback</option><option>Academic discussion</option><option>Reference suggestion</option></select>
+   <label for="visitorMessage">Message</label><textarea id="visitorMessage" name="message" rows="4" required maxlength="2000" placeholder="Write your message…"></textarea>
+   <button class="btn btn-primary" type="submit">Prepare message ↗</button>
+   <button class="btn btn-secondary" type="button" id="copyMessage" style="display:none">Copy message</button>
+   <p class="status" id="contactStatus" aria-live="polite"></p>
+   <textarea id="preparedMessage" rows="5" readonly aria-label="Prepared message" style="display:none"></textarea>
+  </form>
+ </div>
+</section>
+</main>
+
+<footer><div class="container footer-row"><div><strong>PLANTOVA.</strong><div class="small">Plant-Based Antimicrobial Research</div></div><div class="small">Created for academic learning by Rohan Dhakchawale · <span id="year"></span></div><a href="#home" style="color:var(--primary);font-weight:800;text-decoration:none">Back to top ↑</a></div></footer>
+<button class="top-btn" id="topBtn" aria-label="Back to top">↑</button>
+
+<script>
+const $ = (s, root=document) => root.querySelector(s);
+const $$ = (s, root=document) => [...root.querySelectorAll(s)];
+
+// Theme toggle remembers the visitor's choice on this device.
+const savedTheme = localStorage.getItem('plantova-theme');
+if(savedTheme) document.documentElement.dataset.theme = savedTheme;
+$('#themeToggle').textContent = document.documentElement.dataset.theme === 'dark' ? '☀' : '☾';
+$('#themeToggle').addEventListener('click', () => {
+  const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+  document.documentElement.dataset.theme = next;
+  localStorage.setItem('plantova-theme', next);
+  $('#themeToggle').textContent = next === 'dark' ? '☀' : '☾';
+});
+
+// Mobile navigation.
+$('#menuToggle').addEventListener('click', () => {
+  const opened = $('#navlinks').classList.toggle('open');
+  $('#menuToggle').setAttribute('aria-expanded', String(opened));
+  $('#menuToggle').textContent = opened ? '✕' : '☰';
+});
+$$('#navlinks a').forEach(a => a.addEventListener('click', () => {
+  $('#navlinks').classList.remove('open');
+  $('#menuToggle').setAttribute('aria-expanded','false');
+  $('#menuToggle').textContent = '☰';
+}));
+
+// Scroll progress, back-to-top and reveal animations.
+function onScroll(){
+  const max = document.documentElement.scrollHeight - window.innerHeight;
+  $('#progress').style.width = (max > 0 ? window.scrollY/max*100 : 0) + '%';
+  $('#topBtn').classList.toggle('show', window.scrollY > 500);
+}
+window.addEventListener('scroll', onScroll, {passive:true}); onScroll();
+$('#topBtn').addEventListener('click', () => window.scrollTo({top:0,behavior:'smooth'}));
+if('IntersectionObserver' in window){
+  const observer = new IntersectionObserver(entries => entries.forEach(entry => {
+    if(entry.isIntersecting){entry.target.classList.add('visible');observer.unobserve(entry.target);}
+  }), {threshold:.12});
+  $$('.reveal').forEach(el => observer.observe(el));
+}else{$$('.reveal').forEach(el => el.classList.add('visible'));}
+
+// Search/filter plant cards.
+$('#plantSearch').addEventListener('input', e => {
+  const q = e.target.value.trim().toLowerCase(); let count = 0;
+  $$('.plant-card').forEach(card => {
+    const show = (card.dataset.search + ' ' + card.innerText).toLowerCase().includes(q);
+    card.style.display = show ? '' : 'none'; if(show) count++;
+  });
+  $('#plantCount').textContent = `Showing ${count} plant profile${count===1?'':'s'}`;
+});
+
+// Interactive mini quiz.
+$$('.quiz-option').forEach(button => button.addEventListener('click', () => {
+  $$('.quiz-option').forEach(b => {b.classList.remove('correct','wrong');b.disabled = true;});
+  const correct = button.dataset.correct === 'true';
+  button.classList.add(correct ? 'correct' : 'wrong');
+  if(!correct) $('.quiz-option[data-correct="true"]').classList.add('correct');
+  $('#quizResult').textContent = correct
+    ? 'Correct! Laboratory findings are preliminary and apply to the tested conditions.'
+    : 'Not quite. The correct principle is that lab findings are preliminary evidence, not proof of a cure or safety.';
+}));
+$('#quizReset').addEventListener('click', () => {
+  $$('.quiz-option').forEach(b => {b.disabled=false;b.classList.remove('correct','wrong');});
+  $('#quizResult').textContent = '';
+});
+
+// Print or save as PDF.
+$('#printBtn').addEventListener('click', () => window.print());
+
+// Contact form builds a message locally; it does not send it automatically.
+let messageToCopy = '';
+$('#contactForm').addEventListener('submit', event => {
+  event.preventDefault();
+  if(!event.currentTarget.reportValidity()) return;
+  const data = new FormData(event.currentTarget);
+  messageToCopy = `To: Rohan Dhakchawale\nTopic: ${data.get('topic')}\nFrom: ${data.get('name')} (${data.get('email')})\n\n${data.get('message')}`;
+  $('#preparedMessage').value = messageToCopy;
+  $('#preparedMessage').style.display = 'block';
+  $('#copyMessage').style.display = 'inline-flex';
+  $('#contactStatus').textContent = 'Message prepared. Use “Copy message” to copy it; this demo does not send email.';
+});
+$('#copyMessage').addEventListener('click', async () => {
+  try{
+    await navigator.clipboard.writeText(messageToCopy);
+    $('#contactStatus').textContent = 'Message copied. You can paste it into your email app.';
+  }catch(e){
+    $('#preparedMessage').focus(); $('#preparedMessage').select();
+    $('#contactStatus').textContent = 'Select the prepared message above and copy it using Ctrl+C.';
+  }
+});
+$('#year').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
+
